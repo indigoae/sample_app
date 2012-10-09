@@ -9,6 +9,11 @@ group :development, :test do
   gem 'sqlite3'
   gem 'rspec-rails'
   gem 'guard-rspec'
+  gem 'bcrypt-ruby'
+end
+
+group :development do
+  gem 'annotate'
 end
 
 
