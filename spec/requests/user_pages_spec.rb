@@ -19,6 +19,7 @@ describe "User pages" do
     it { should have_selector('title', text: full_title('Sign up')) }
   end
 
+
   describe "signup" do
 
     before { visit signup_path }
@@ -51,12 +52,20 @@ describe "User pages" do
         expect { click_button submit }.to change(User, :count).by(1)
       end
 
-      describe "should redirect to profile page and display flash" do
+      describe "signin with valid info" do
         before { click_button submit }
         let(:user) { User.find_by_email('user@example.com') }
 
         it { should have_selector('title', text: user.name) }
         it { should have_selector('div.alert.alert-success', text: 'Welcome') }
+        describe "User should be signed in" do
+          it { should have_link('Sign out') }
+        end
+
+        describe "followed by signout" do
+          before { click_link "Sign out" }
+          it { should have_link('Sign in') }
+        end
       end
     end
   end
