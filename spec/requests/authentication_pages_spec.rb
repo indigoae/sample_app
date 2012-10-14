@@ -16,9 +16,18 @@ describe "Authentication" do
         before { delete user_path(user) }
         specify { response.should redirect_to(root_path) }
       end
-
-
     end
+
+    describe "submitting a DELETE request to the Users#destroy action as an admin on self" do
+      let(:admin) { FactoryGirl.create(:admin) }
+
+      before do
+        sign_in admin
+        delete user_path(admin)
+      end
+      specify { response.should redirect_to(root_path) }
+    end
+
 
     describe "for non-signed in user" do
       let(:user) { FactoryGirl.create(:user) }
@@ -32,6 +41,17 @@ describe "Authentication" do
         describe "after signing in" do
           before { sign_in user }
           it { should have_selector('title', text: "Edit user")}
+
+          describe "it should only friendly forward once" do
+            before do
+              delete signout_path
+              sign_in user
+            end
+
+            it { should have_selector('title', text: user.name) }
+          end
+
+
         end
       end
 

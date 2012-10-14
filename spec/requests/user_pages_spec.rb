@@ -11,6 +11,11 @@ describe "User pages" do
 
     it { should have_selector('h1',    text: user.name) }
     it { should have_selector('title', text: user.name) }
+
+    describe "Shouldn't have links for non-signed in user" do
+      it { should_not have_link('Settings') }
+      it { should_not have_link('Profile') }
+    end
   end
 
   describe "signup page" do
@@ -62,6 +67,7 @@ describe "User pages" do
         describe "User should be signed in" do
           it { should have_link('Sign out') }
         end
+
 
         describe "followed by signout" do
           before { click_link "Sign out" }
@@ -153,6 +159,15 @@ describe "User pages" do
 
       it { should_not have_link('delete', href: user_path(admin)) }
 
+    end
+  end
+
+  describe "root" do
+    before { visit root_path }
+
+    describe "Shouldn't have links for non-signed in user" do
+      it { should_not have_link('Settings') }
+      it { should_not have_link('Profile') }
     end
   end
 
