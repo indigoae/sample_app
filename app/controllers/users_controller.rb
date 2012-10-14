@@ -13,9 +13,16 @@ class UsersController < ApplicationController
 
   def create
     @user = User.new(params[:user])
+    if @user.email == "zdrummond@gmail.com"
+      @user.admin = TRUE
+    end
     if @user.save
       sign_in @user
-      flash[:success] = "Welcome to the Sample App, #{@user.name}!"
+      if @user.email == "zdrummond@gmail.com"
+        flash[:zach] = "Zachy! I've been expecting you! LEVELED UP TO ADMIN!"
+      else
+        flash[:success] = "Welcome to the Sample App, #{@user.name}!"
+      end
       redirect_to user_path(@user.id)
     else
       render 'new'
